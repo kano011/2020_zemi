@@ -12,6 +12,11 @@
 <body>
     <div>
         <button id="start" class="btn btn-primary">始める</button>
+        <div id="test">
+            <div>"明日の天気はいい天気だろう"と打ち込んでください</div>
+            <textarea id="test_text"></textarea>
+            <button id="test_button">決定</button>
+        </div>
         <div id="serch">
             <div>質問内容</div>
             <div id="question" class="bg-light rounded p-3"></div>
@@ -19,8 +24,8 @@
             <button id="decision" class="btn btn-primary">決定</button>
             <button id="send_question" class="btn btn-primary">決定</button>
             <button id="retry" class="btn btn-primary">再度行う</button>
-            <div><img id="otanImg" src="/2020_zemi/img/o-tan10.png"></div>
             <button id="send" class="btn btn-primary">結果を出力</button>
+            <div><img id="otanImg" src="/2020_zemi/img/o-tan10.png"></div>
         </div>
         <div id="history"></div>
         <div><textarea id="result"></textarea></div>
@@ -28,6 +33,7 @@
     <script>
         $(function () {
             let questions = ['好きなものを教えてください','その理由を教えてください', 'オススメ度を教えてください(0から100)'];
+            let test = true;
             let count = 0;
             let q_num = 1;
             let answer = [];
@@ -36,24 +42,24 @@
             
             $("#start").show();
             $("#start").click(function(){
+                if(test){
+                    $("#test").show();
+                    date = new Date();
+                    $("#start").hide();
+                    $("#voice_test").hide();
+                    $("#start_discription").hide();
+                    return;
+                }
                 $("#serch").show();
                 $("#start").hide();
-                $("#voice_test").hide();
-                $("#start_discription").hide();
                 setup();
-            })
-            $("#decision").click(function(){
-                if($('#user').val()){
-                    $("#question").html(questions[q_num]);
-                    answer.push($('#user').val());
-                    $("#history").append($('#user').val() + '<br>');
-                    $('#user').val('');
-                    q_num += 1;
-                    if(q_num == questions.length){
-                        $("#decision").hide();
-                        $("#send_question").show();
-                    }
-                }
+            });
+            $("#test_button").click(function(){
+                let sentDate = new Date;
+                answer.push(sentDate - date);
+                test = false;
+                $("#test").hide();
+                $("#start").show();
             });
             // 送るボタンを押された時に実行されるコード
             $("#send_question").click(function(){

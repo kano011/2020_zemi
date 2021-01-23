@@ -12,6 +12,11 @@
 <body>
     <div>
         <button id="start" class="btn btn-primary">始める</button>
+        <div id="test">
+            <div>"明日の天気はいい天気だろう"と打ち込んでください</div>
+            <textarea id="test_text"></textarea>
+            <button id="test_button">決定</button>
+        </div>
         <div id="serch">
             <div>質問内容</div>
             <div id="question" class="bg-light rounded p-3"></div>
@@ -27,6 +32,7 @@
     <script>
         $(function () {
             let questions = ['好きなものを教えてください','その理由を教えてください', 'オススメ度を教えてください(0から100)'];
+            let test = true;
             let count = 0;
             let q_num = 1;
             let answer = [];
@@ -34,12 +40,25 @@
             let date = new Date();
             $("#start").show();
             $("#start").click(function(){
+                if(test){
+                    $("#test").show();
+                    date = new Date();
+                    $("#start").hide();
+                    $("#voice_test").hide();
+                    $("#start_discription").hide();
+                    return;
+                }
                 $("#serch").show();
                 $("#start").hide();
-                $("#voice_test").hide();
-                $("#start_discription").hide();
                 setup();
-            })
+            });
+            $("#test_button").click(function(){
+                let sentDate = new Date;
+                answer.push(sentDate - date);
+                test = false;
+                $("#test").hide();
+                $("#start").show();
+            });
             $("#decision").click(function(){
                 if($('#user').val()){
                     $("#question").html(questions[q_num]);

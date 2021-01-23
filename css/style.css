@@ -37,6 +37,6 @@ image{
     height: 300px;
 }
 
-#send_question,#retry,#send,#result,#serch,#start{
+#test,#send_question,#retry,#send,#result,#serch,#start{
     display: none;
 }
