@@ -25,7 +25,6 @@
         </div>
         <div id="history"></div>
         <div><textarea id="result"></textarea></div>
-        <div class="back"><a href="/questionair01/">最初からやり直す</a></div>
     </div>
     <script>
         $(function () {
@@ -76,8 +75,6 @@
                     $("#history").append($('#user').val() + '<br>');
                     send();
                     $('#user').val('');
-                    $("#send").show();
-                    
                 }
             });
 
@@ -98,6 +95,7 @@
                 date = new Date();
                 $("#decision").show();
                 $("#retry").hide();
+                $("#send").hide();
                 $("#question").html(questions[0]);
                 otanSpeak(questions[0]);
             }
@@ -121,6 +119,7 @@
 
             function finish(){
                 $("#retry").show();
+                $("#send").show();
                 $("#send_question").hide();
             }
         });
