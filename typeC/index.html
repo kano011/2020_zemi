@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/2020_zemi/css/style.css">
+    <title>おーたんとおしゃべり</title>
+</head>
+
+<body>
+    <div>
+        <button id="start" class="btn btn-primary">始める</button>
+        <div id="serch">
+            <div>質問内容</div>
+            <div id="question" class="bg-light rounded p-3"></div>
+            <textarea type="text" id="user" required></textarea>
+            <button id="decision" class="btn btn-primary">決定</button>
+            <button id="send_question" class="btn btn-primary">決定</button>
+            <button id="retry" class="btn btn-primary">再度行う</button>
+            <div><img id="otanImg" src="/2020_zemi/img/o-tan10.png"></div>
+            <button id="send" class="btn btn-primary">結果を出力</button>
+        </div>
+        <div id="history"></div>
+        <div><textarea id="result"></textarea></div>
+        <div class="back"><a href="/questionair01/">最初からやり直す</a></div>
+    </div>
+    <script>
+        $(function () {
+            let questions = ['好きなものを教えてください','その理由を教えてください', 'オススメ度を教えてください(0から100)'];
+            let count = 0;
+            let q_num = 1;
+            let answer = [];
+            let data = [];
+            let date = new Date();
+            // おーたんが話す機能の設定
+            var ss = new SpeechSynthesisUtterance();
+            ss.lang = "ja-JP";
+            ss.voiceURI = "Google 日本人";
+            ss.volume = 1.2;
+            ss.rate = 1.25;
+            ss.pitch = 1.8;
+            
+            $("#start").show();
+            $("#start").click(function(){
+                $("#serch").show();
+                $("#start").hide();
+                $("#voice_test").hide();
+                $("#start_discription").hide();
+                setup();
+            })
+            $("#decision").click(function(){
+                if($('#user').val()){
+                    $("#question").html(questions[q_num]);
+                    otanSpeak(questions[q_num]);
+                    answer.push($('#user').val());
+                    $("#history").append($('#user').val() + '<br>');
+                    $('#user').val('');
+                    q_num += 1;
+                    if(q_num == questions.length){
+                        $("#decision").hide();
+                        $("#send_question").show();
+                    }
+                }
+            });
+            // 送るボタンを押された時に実行されるコード
+            $("#send_question").click(function(){
+                // inputに文字がある時に実行
+                if($('#user').val()){
+                    answer.push($('#user').val());
+                    $("#history").append($('#user').val() + '<br>');
+                    send();
+                    $('#user').val('');
+                    $("#send").show();
+                    
+                }
+            });
+
+            // 再度行うが押された場合に実行される
+            $("#retry").click(function(){
+                count += 1;
+                setup();
+            });
+
+            $("#send").click(function(){
+                $("#result").show();
+                $("#result").val(data);
+            });
+
+            function setup(){
+                q_num = 1;
+                answer = []
+                date = new Date();
+                $("#decision").show();
+                $("#retry").hide();
+                $("#question").html(questions[0]);
+                otanSpeak(questions[0]);
+            }
+
+            // send function
+            function send(){
+                // result function を起動
+                let sendDate = new Date();
+                answer.push(sendDate - date);
+                answer.push(count);
+                data.push(answer);
+                answer = [];
+                finish();
+            }
+
+            // おーたん話す 関数 引数:1
+            function otanSpeak(text){
+                ss.text=text;
+                speechSynthesis.speak(ss);
+            };
+
+            function finish(){
+                $("#retry").show();
+                $("#send_question").hide();
+            }
+        });
+    </script>
+</body >
+</html >
