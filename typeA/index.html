@@ -17,7 +17,7 @@
         <div id="test">
             <div>"明日の天気はいい天気だろう"と打ち込んでください</div>
             <textarea id="test_text"></textarea>
-            <button id="test_button">決定</button>
+            <button id="test_button" class="btn btn-primary">決定</button>
         </div>
         <div id="serch">
             <div>質問内容</div>
@@ -25,7 +25,7 @@
             <textarea type="text" id="user" required></textarea>
             <button id="decision" class="btn btn-primary">決定</button>
             <button id="send_question" class="btn btn-primary">決定</button>
-            <button id="retry" class="btn btn-primary">再度行う</button>
+            <button id="retry" class="btn btn-primary">もう一つ追加</button>
             <button id="send" class="btn btn-primary">結果を出力</button>
             <div><img id="otanImg" src="/2020_zemi/img/o-tan10.png"></div>
         </div>
@@ -106,6 +106,7 @@
 
             $("#send").click(function(){
                 $("#result").show();
+                $("#retry").hide();
                 $("#result").val(data);
             });
 
