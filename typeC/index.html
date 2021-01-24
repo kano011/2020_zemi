@@ -46,8 +46,6 @@
                     $("#test").show();
                     date = new Date();
                     $("#start").hide();
-                    $("#voice_test").hide();
-                    $("#start_discription").hide();
                     return;
                 }
                 $("#serch").show();
@@ -60,6 +58,19 @@
                 test = false;
                 $("#test").hide();
                 $("#start").show();
+            });
+            $("#decision").click(function(){
+                if($('#user').val()){
+                    $("#question").html(questions[q_num]);
+                    answer.push($('#user').val());
+                    $("#history").append($('#user').val() + '<br>');
+                    $('#user').val("");
+                    q_num += 1;
+                    if(q_num == questions.length){
+                        $("#decision").hide();
+                        $("#send_question").show();
+                    }
+                }
             });
             // 送るボタンを押された時に実行されるコード
             $("#send_question").click(function(){
