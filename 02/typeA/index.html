@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/2020_zemi/css/style.css">
+    <title>typeA</title>
+</head>
+
+<body>
+    <div>
+        <div id="setup">
+            <button id="voice_test" class="btn btn-primary">音声テスト</button>
+            <div id="start_discription">音声が聞こえたら始めるを押して始めてください。</div>
+            <button id="start" class="btn btn-primary">始める</button>
+        </div>
+        <div id="serch">
+            <button id="next" class="btn btn-primary">次へ</button>
+            <button id="pardon" class="btn btn-primary">もう一度</button>
+            <button id="finish" class="btn btn-primary">終わり</button>
+        </div>
+        <div id="history"></div>
+        <div><textarea id="result"></textarea></div>
+    </div>
+    <script>
+        $(function () {
+            let questions = ['好きな食べ物を教えてください','その理由を教えてください','嫌いな食べ物を教えてください','その理由を教えてください','好きな飲み物を教えてください','その理由を教えてください','嫌いな飲み物を教えてください','その理由を教えてください','好きな動物を教えてください','その理由を教えてください', '嫌いな動物を教えてください', 'その理由を教えてください','好きな言葉を教えてください','その理由を教えてください','嫌いな言葉を教えてください','その理由を教えてください'];
+            let q_num = 0;
+            // おーたんが話す機能の設定
+            var ss = new SpeechSynthesisUtterance();
+            ss.lang = "ja-JP";
+            ss.voiceURI = "Google 日本人";
+            ss.volume = 1.2;
+            ss.rate = 1.0;
+            ss.pitch = 1.0;
+            
+            $("#voice_test").click(function(){
+                syntheticVoice("音声テストです。この音声が聞こえたら始めるを押して始めてください");
+                $("#start").show();
+            });
+
+            $("#start").click(function(){
+                $("#serch").show();
+                $("#setup").hide();
+                $("#finish").hide();
+                syntheticVoice(questions[q_num]);
+            });
+
+            $("#next").click(function(){
+                q_num ++;
+                if(q_num == questions.length/2){
+                    alert('休憩しましたか？');
+                }
+                if(q_num >= questions.length/2){
+                    ss.rate = 1.4;
+                    console.log("fast");
+                }
+                syntheticVoice(questions[q_num]);
+                if(q_num == questions.length - 1){
+                    $("#finish").show();
+                    $("#next").hide();
+                }
+            });
+
+            $("#pardon").click(function(){
+                syntheticVoice(questions[q_num]);
+            })
+
+            $("#finish").click(function(){
+                syntheticVoice("お疲れ様です。ありがとうございました。");
+            });
+
+            // おーたん話す 関数 引数:1
+            function syntheticVoice(text){
+                ss.text=text;
+                speechSynthesis.speak(ss);
+            };
+        });
+    </script>
+</body >
+</html >
